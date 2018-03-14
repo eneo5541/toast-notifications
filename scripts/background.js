@@ -7,6 +7,7 @@
   permission in the manifest file (or calling
   "Notification.requestPermission" beforehand).
 */
+/*
 function show() {
   var time = /(..)(:..)/.exec(new Date());     // The prettyprinted time.
   var hour = time[1] % 12 || 12;               // The prettyprinted hour.
@@ -43,3 +44,11 @@ if (window.Notification) {
     }
   }, 60000);
 }
+*/
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  // alert("message received");
+  console.log(sender.tab ?
+    "from a content script:" + sender.tab.url :
+    "from the extension");
+});

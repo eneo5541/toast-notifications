@@ -2,12 +2,16 @@
 <head></head>
 <body>
 <script>
-    var go = function() {
-        var event = document.createEvent('Event');
-        event.initEvent('hello');
-        document.dispatchEvent(event);
-    }
+    window.addEventListener('message', function(event) {
+      if (event.data.type === 'UPDATED_SAVED_SEARCH') {
+        console.log('Domain search results is updating saved searches...');
+        window.setTimeout(function() {
+          console.log('here is where I would send the saved searches back...');
+          window.postMessage({ type: 'SAVED_SEARCH_RESULTS', data: { list: [1, 2, 3] } }, '*');
+        }, 2500);
+      }
+    }, true);
 </script>
-<a href="javascript:go();">Click me</a>
+<div>Dummy Domain Search Results</div>
 </body>
 </html>

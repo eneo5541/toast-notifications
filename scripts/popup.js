@@ -103,9 +103,10 @@ function saveBackgroundColor(url, color) {
 // to a document's origin. Also, using chrome.storage.sync instead of
 // chrome.storage.local allows the extension data to be synced across multiple
 // user devices.
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
   var refreshButton = document.getElementById('refresh-button');
   refreshButton.addEventListener('click', updateSavedSearch);
+
   /* getCurrentTabUrl((url) => {
     var dropdown = document.getElementById('dropdown');
 
@@ -128,30 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
 function updateSavedSearch(event) {
-  console.log('updating saved search!');
-
-  var dataToWebPage = {text: 'test', foo: 1, bar: false};
-  chrome.tabs.executeScript({
-      code: '(' + function(params) {
-          //This function will  work in webpage
-          console.log(params); //logs in webpage console 
-          return {success: true, response: "This is from webpage."};
-      } + ')(' + JSON.stringify(dataToWebPage) + ');'
-  }, function(results) {
-      //This is the callback response from webpage
-      console.log(results[0]); //logs in extension console 
-  });
-
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var tab = tabs[0];
-    if (tab.url.indexOf('domain.com.au') < 0 && tab.url.indexOf('localhost') < 0) {
-       document.getElementById('error-msg').innerHTML = 'You must be on domain.com.au to synchronize!';
+    if (tab.url.indexOf('domain.com.au') > 0) {
+      document.getElementById('error-msg').innerHTML = 'You must be on domain.com.au to synchronize';
     } else {
       document.getElementById('error-msg').innerHTML = 'Your searches are synchronized';
-
-      chrome.tabs.sendMessage(tab.id, { greeting: 'hello' }, function(response) {
-        console.log(response.farewell);
+      chrome.tabs.sendMessage(tab.id, { type: 'UPDATED_SAVED_SEARCH' }, function(response) {
+          console.log('success');
       });
     }
   });
