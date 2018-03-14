@@ -10,7 +10,7 @@ const updateSavedSearch = event => {
     } else {
       document.getElementById('error-msg').innerHTML = 'Your searches are synchronized';
       chrome.tabs.sendMessage(tabs[0].id, { type: 'UPDATED_SAVED_SEARCH' }, response => {
-          console.log('success');
+          console.log('Successfully updated saved searches');
       });
     }
   });
