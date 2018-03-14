@@ -1,9 +1,4 @@
 <!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
 <html>
   <head>
     <title>Getting Started Extension's Popup</title>
@@ -17,12 +12,6 @@
         font-size: 15px;
       }
 
-      #container {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-      }
-
       #refresh-button {
         background-image:url('./assets/icon_refresh.svg');
         width: 24px;
@@ -34,16 +23,8 @@
         color: red;
       }
     </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-    -->
     <script src="./scripts/popup.js"></script>
   </head>
-
   <body>
     <h1>Synchronize saved search...</h1>
     <button id="refresh-button"></button>
