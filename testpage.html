@@ -1,0 +1,14 @@
+<html>
+<head></head>
+<body>
+<script>
+    var go = function() {
+        console.log('go event...');
+        var event = document.createEvent('Event');
+        event.initEvent('hello');
+        document.dispatchEvent(event);
+    }
+</script>
+<a href="javascript:go();">Click me</a>
+</body>
+</html>
