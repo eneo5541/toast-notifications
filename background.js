@@ -13,7 +13,7 @@ function show() {
   var period = time[1] < 12 ? 'a.m.' : 'p.m.'; // The period of the day.
   new Notification(hour + time[2] + ' ' + period, {
     icon: '48.png',
-    body: 'Time to make the toast.'
+    body: 'Time to make the toast22.'
   });
 }
 
