@@ -42,8 +42,23 @@ const getSearchResults = () => {
     body: JSON.stringify(payload)
   })
   .then(response => (response.json()))
-  .then(json => { displayNotification(json.results[0].listing); })
+  .then(json => { updateLatestListing(json.results[0].listing); })
   .catch(error => { console.log('Request failed', error); });
+}
+
+const updateLatestListing = listing => {
+  const currentListing = localStorage.currentListing ? JSON.parse(localStorage.currentListing) : {};
+  const newListing = {
+    id: listing.id,
+    url: listing.listingSlug,
+    address: listing.propertyDetails.displayableAddress,
+    image: listing.media[0].url
+  };
+
+  if (!currentListing || currentListing.id !== newListing.id) {
+    localStorage.currentListing = JSON.stringify(newListing);
+    displayNotification(newListing);
+  }
 }
 
 var currentNotification = { id: null, url: null };
@@ -63,18 +78,16 @@ const updateCurrentNotification = (id, url) => {
 const displayNotification = listing => {
   var options = {
     type: "basic",
-    title: "Primary Title",
-    message: "Primary message to display",
-    iconUrl: listing.media[0].url,
+    title: "A new listing is available",
+    message: listing.address,
+    iconUrl: listing.image,
     buttons: [{
       title: "View listing"
     }]
   };
 
-  chrome.notifications.create(options, (id) => { updateCurrentNotification(id, listing.listingSlug); });
+  chrome.notifications.create(options, (id) => { updateCurrentNotification(id, listing.url); });
 }
-
-// localStorage.domainSavedSearches = '{"savedSearches":[{"searchName":"Penrith NSW 2750, Chatswood NSW 2067","url":"https://stage.domain.com.au/sale/?suburb=chatswood-nsw-2067,penrith-nsw-2750&ssubs=1&excludeunderoffer=1","searchQuery":{"queryBody":"{\"humanizedPrice\":\"Any price\",\"locations\":[\"Penrith\",\"Chatswood\"],\"listingType\":\"\"}"}},{"searchName":"rr","url":"https://stage.domain.com.au/new-homes/?ptype=new-apartments,new-house-land,new-land,town-house&bedrooms=1-5&bathrooms=1-4&price=0-250000&carspaces=0-4","searchQuery":{"queryBody":"{\"humanizedPrice\":\"0-250000\",\"locations\":[\"\"],\"listingType\":\"\"}"}},{"searchName":"w","url":"https://stage.domain.com.au/new-homes/?ptype=new-apartments,new-house-land,new-land,town-house&bedrooms=1-5&bathrooms=1-4&price=0-200000&carspaces=0-4","searchQuery":{"queryBody":"{\"humanizedPrice\":\"0-200000\",\"locations\":[\"\"],\"listingType\":\"\"}"}}]}';
 
 if (window.Notification) {
   authorize();

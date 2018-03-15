@@ -3,14 +3,14 @@
   "version": "1.0",
   "description":
     "Shows toast notifications for new properties",
-  "icons": {"16": "assets/16.png", "48": "assets/48.png", "128": "assets/128.png"},
+  "icons": {"128": "assets/domain-icon.png"},
   "permissions": [
     "notifications",
     "activeTab",
     "storage"
   ],
   "browser_action": {
-    "default_icon": "assets/48.png",
+    "default_icon": "assets/domain-icon.png",
     "default_popup": "popup.html",
     "default_title": "Updated saved searches"
   },
