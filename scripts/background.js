@@ -13,7 +13,7 @@ const authorize = () => {
   .then(response => (response.json()))
   .then(json => {
     this.access_token = json.access_token;
-    getSearchResults();
+    // getSearchResults();
   })
   .catch(error => { console.log('Request failed', error); });
 }
@@ -32,6 +32,7 @@ const getSearchResults = () => {
     sort: { sortKey: 'DateUpdated', direction: 'Descending' },
     locations: firstSearch.locations.map(location => ({ 'suburb': location }))
   };
+  console.log('fetching...');
 
   fetch('https://stage-search-api.domain.com.au/v2/listings/search', {
     method: 'post',
@@ -47,18 +48,14 @@ const getSearchResults = () => {
 }
 
 const updateLatestListing = listing => {
-  const currentListing = localStorage.currentListing ? JSON.parse(localStorage.currentListing) : {};
+  console.log('updating!');
   const newListing = {
     id: listing.id,
     url: listing.listingSlug,
     address: listing.propertyDetails.displayableAddress,
     image: listing.media[0].url
   };
-
-  if (!currentListing || currentListing.id !== newListing.id) {
-    localStorage.currentListing = JSON.stringify(newListing);
-    displayNotification(newListing);
-  }
+  displayNotification(newListing);
 }
 
 var currentNotification = { id: null, url: null };
@@ -86,6 +83,8 @@ const displayNotification = listing => {
     }]
   };
 
+  console.log('display notification!')
+
   chrome.notifications.create(options, (id) => { updateCurrentNotification(id, listing.url); });
 }
 
@@ -108,7 +107,8 @@ if (window.Notification) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if(request.type === 'STORE_SAVED_SEARCH') {
     console.log('Storing saved searches: ', request.data);
-    localStorage.domainSavedSearches = JSON.stringify(request.data.savedSearchList);
+    window.setTimeout(getSearchResults, 5000);
+    //localStorage.domainSavedSearches = JSON.stringify(request.data.savedSearchList);
   }
   sendResponse({ success: request.type === 'STORE_SAVED_SEARCH' });
 });
