@@ -44,16 +44,34 @@ const getSearchResults = () => {
   .then(response => (response.json()))
   .then(json => { displayNotification(json.results[0].listing); })
   .catch(error => { console.log('Request failed', error); });
+}
 
+var currentNotification = { id: null, url: null };
+chrome.notifications.onButtonClicked.addListener(function(notification, button) {
+  if (notification === currentNotification.id && button === 0) {
+    window.open(currentNotification.url);
+  }
+});
 
+const updateCurrentNotification = (id, url) => {
+  currentNotification = {
+    id,
+    url: `https://www.domain.com.au/${url}`
+  };
 }
 
 const displayNotification = listing => {
-  console.log('Display listing:', listing);
-  new Notification('A new listing is available!', {
-    icon: listing.media[0].url,
-    body: listing.propertyDetails.displayableAddress
-  });
+  var options = {
+    type: "basic",
+    title: "Primary Title",
+    message: "Primary message to display",
+    iconUrl: listing.media[0].url,
+    buttons: [{
+      title: "View listing"
+    }]
+  };
+
+  chrome.notifications.create(options, (id) => { updateCurrentNotification(id, listing.listingSlug); });
 }
 
 // localStorage.domainSavedSearches = '{"savedSearches":[{"searchName":"Penrith NSW 2750, Chatswood NSW 2067","url":"https://stage.domain.com.au/sale/?suburb=chatswood-nsw-2067,penrith-nsw-2750&ssubs=1&excludeunderoffer=1","searchQuery":{"queryBody":"{\"humanizedPrice\":\"Any price\",\"locations\":[\"Penrith\",\"Chatswood\"],\"listingType\":\"\"}"}},{"searchName":"rr","url":"https://stage.domain.com.au/new-homes/?ptype=new-apartments,new-house-land,new-land,town-house&bedrooms=1-5&bathrooms=1-4&price=0-250000&carspaces=0-4","searchQuery":{"queryBody":"{\"humanizedPrice\":\"0-250000\",\"locations\":[\"\"],\"listingType\":\"\"}"}},{"searchName":"w","url":"https://stage.domain.com.au/new-homes/?ptype=new-apartments,new-house-land,new-land,town-house&bedrooms=1-5&bathrooms=1-4&price=0-200000&carspaces=0-4","searchQuery":{"queryBody":"{\"humanizedPrice\":\"0-200000\",\"locations\":[\"\"],\"listingType\":\"\"}"}}]}';
