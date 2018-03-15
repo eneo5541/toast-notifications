@@ -106,7 +106,8 @@ if (window.Notification) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if(request.type === 'STORE_SAVED_SEARCH') {
-    console.log('Storing saved searches: ', request.data);
+    console.log('Storing saved searches: ', request);
+    // getSearchResults();
     window.setTimeout(getSearchResults, 8000);
     //localStorage.domainSavedSearches = JSON.stringify(request.data.savedSearchList);
   }

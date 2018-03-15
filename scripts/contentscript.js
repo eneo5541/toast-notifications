@@ -6,7 +6,7 @@ window.addEventListener('message', event => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if(request.type === 'UPDATED_SAVED_SEARCH') {
-    window.postMessage({ type: 'UPDATED_SAVED_SEARCH' }, '*');
+    chrome.runtime.sendMessage({ type: 'STORE_SAVED_SEARCH' });
   }
   sendResponse({ success: request.type === 'UPDATED_SAVED_SEARCH' });
 });
