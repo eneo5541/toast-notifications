@@ -8,13 +8,26 @@ const authorize = () => {
       Authorization: `Basic ${window.btoa(username + ":" + password)}`,
       'Content-type': 'application/x-www-form-urlencoded'
     },
-    body: `grant_type=client_credentials&scope=search-listings`,
+    body: `grant_type=client_credentials&scope=search-listings`
   })
   .then(response => (response.json()))
   .then(json => {
     this.access_token = json.access_token;
     getSearchResults();
   })
+  .catch(error => { console.log('Request failed', error); });
+}
+
+const getSavedSearches = authToken => {
+  return fetch('https://stage.domain.com.au/usersavedsearches/savedsearcheslistforcomponentsheader', {
+    method: 'get',
+    headers: {
+      cookie: `DOMAIN.ASPXFORMSAUTH=${authToken.value}`,
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    }
+  })
+  .then(response => { console.log('ok, got your saved searches', response); })
   .catch(error => { console.log('Request failed', error); });
 }
 
@@ -110,5 +123,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log('Storing saved searches: ', request.data);
     localStorage.domainSavedSearches = JSON.stringify(request.data.savedSearchList);
   }
-  sendResponse({ success: request.type === 'STORE_SAVED_SEARCH' });
+
+  if (request.type === 'UPDATE_SAVED_SEARCHES') {
+    console.log('updating saved searches', request);
+    getSavedSearches(request.authToken);
+  }
+  sendResponse({ success: true });
 });

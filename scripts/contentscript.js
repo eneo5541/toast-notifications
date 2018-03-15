@@ -1,12 +1,6 @@
-window.addEventListener('message', event => {
-  if (event.data.type === 'SAVED_SEARCH_RESULTS') {
-    chrome.runtime.sendMessage({ type: 'STORE_SAVED_SEARCH', data: event.data.data });
-  }
-}, true);
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if(request.type === 'UPDATED_SAVED_SEARCH') {
-    window.postMessage({ type: 'UPDATED_SAVED_SEARCH' }, '*');
+  if(request.type === 'UPDATE_SAVED_SEARCHES') {
+    chrome.runtime.sendMessage(request);
   }
-  sendResponse({ success: request.type === 'UPDATED_SAVED_SEARCH' });
+  sendResponse({ success: request.type === 'UPDATE_SAVED_SEARCHES' });
 });
