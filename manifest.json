@@ -1,18 +1,27 @@
 {
-  "name": "Notification Demo",
-  "version": "1.1",
+  "name": "Domain Search Extension",
+  "version": "1.0",
   "description":
-    "Shows off desktop notifications, which are \"toast\" windows that pop up on the desktop.",
-  "icons": {"16": "16.png", "48": "48.png", "128": "128.png"},
+    "Shows toast notifications for new properties",
+  "icons": {"128": "assets/domain-icon.png"},
   "permissions": [
-    "notifications"
+    "notifications",
+    "activeTab",
+    "storage"
   ],
-  "options_page": "options.html",
-  "background": { "scripts": ["background.js"] },
-  "manifest_version": 2,
-
-  // crbug.com/134315
-  "web_accessible_resources": [
-    "48.png"
-  ]
+  "browser_action": {
+    "default_icon": "assets/domain-icon.png",
+    "default_popup": "popup.html",
+    "default_title": "Updated saved searches"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["scripts/contentscript.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["scripts/background.js"]
+  },
+  "manifest_version": 2
 }

@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Synchronize saved searches</title>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <style type="text/css">
+      body {
+        margin: 10px;
+        font-family: 'Source Sans Pro', sans-serif;
+        color: #3c475b;
+      }
+
+      .popup-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction:column;
+        width: 200px;
+      }
+
+      .popup-domain-logo {
+        width: 120px;
+      }
+
+      .popup-subtitles {
+        font-size: 12px;
+        margin: 10px 0;
+      }
+
+      .popup-subtitles::before {
+        content: '';
+        width: calc(100% - 15px);
+        height: 1px;
+        background-color: #e6e9ed;
+        display: block;
+        margin: 0 auto 10px auto;
+      }
+
+      .popup-cta-button {
+        margin: 0 0 10px;
+        font-size: 16px;
+      }
+
+      #refresh-button {
+        padding: 8px 26px;
+        border-color: #1e293d;
+        background: none;
+        border-radius: 3px;
+        font-size: 14px;
+      }
+
+      #error-msg {
+        color: red;
+        font-size: 14px;
+      }
+    </style>
+    <script src="./scripts/popup.js"></script>
+  </head>
+  <body>
+    <div class="popup-wrapper">
+      <img class="popup-domain-logo" src="./assets/domain-logo.png" alt="Domain logo" />
+      
+      <p class="popup-subtitles">
+        Visit <a href="https://www.domain.com.au">domain.com.au</a> and upload your saved searches to get notifications!
+      </p>
+      <p class="popup-cta-button">Upload saved searches...</p>
+      <button id="refresh-button">Upload</button>
+      <p id="error-msg"/>
+    </div>
+  </body>
+</html>
