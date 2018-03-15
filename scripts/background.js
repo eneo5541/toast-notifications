@@ -1,6 +1,6 @@
 const authorize = () => {
-  const username = 'fe-server-search-results';
-  const password = '65d111990b2246108b721b820bee958e';
+  const username = '';
+  const password = '';
 
   return fetch('https://stage-auth.domain.com.au/v1/connect/token', {
     method: 'post',
