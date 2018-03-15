@@ -91,7 +91,7 @@ const displayNotification = listing => {
 if (window.Notification) {
   authorize();
 
-  let interval = 0;
+  /*let interval = 0;
   const frequency = 1;
 
   setInterval(() => {
@@ -101,13 +101,13 @@ if (window.Notification) {
       getSearchResults();
       interval = 0;
     }
-  }, 60000);
+  }, 60000);*/
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if(request.type === 'STORE_SAVED_SEARCH') {
     console.log('Storing saved searches: ', request.data);
-    window.setTimeout(getSearchResults, 5000);
+    window.setTimeout(getSearchResults, 8000);
     //localStorage.domainSavedSearches = JSON.stringify(request.data.savedSearchList);
   }
   sendResponse({ success: request.type === 'STORE_SAVED_SEARCH' });
